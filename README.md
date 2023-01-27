@@ -1,2 +1,2 @@
 # DSM-Delivery-IOS
-DSM-Delivery-IOS 레포입니다
+DSM-Delivery-iOS 레포입니다
