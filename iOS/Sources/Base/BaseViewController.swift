@@ -6,9 +6,9 @@ class BaseViewController: UIViewController {
     typealias DSMDeliveryImage = DSMDeliveryAsset.Assets
     var disposeBag: DisposeBag = .init()
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         addView()
         setLayout()
         configureVC()
