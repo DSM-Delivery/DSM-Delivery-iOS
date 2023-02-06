@@ -2,7 +2,7 @@ import UIKit
 import Then
 import SnapKit
 
-class FoodCell: UITableViewCell {
+class FoodTableViewCell: UITableViewCell {
 
     let userImageView = UIImageView().then {
 //        $0.image = UIImage(named: "foodUser_image")

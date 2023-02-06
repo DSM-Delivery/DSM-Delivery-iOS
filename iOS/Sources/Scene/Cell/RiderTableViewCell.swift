@@ -2,7 +2,7 @@ import UIKit
 import Then
 import SnapKit
 
-class RiderCell: UITableViewCell {
+class RiderTableViewCell: UITableViewCell {
 
     let riderUserImageView = UIImageView().then {
         $0.layer.cornerRadius = 10

@@ -16,12 +16,17 @@ class MainViewController: BaseViewController {
         $0.setImage(UIImage(named: "user_image"), for: .normal)
     }
     let foodTableView = UITableView().then {
-        $0.register(FoodCell.self, forCellReuseIdentifier: "FoodCell")
+        $0.register(FoodTableViewCell.self, forCellReuseIdentifier: "FoodTableViewCell")
         $0.rowHeight = 100
         $0.separatorStyle = .none
         $0.backgroundColor = DSMDeliveryColor.light.color
     }
-    let riderTableView = RiderTableView()
+    let riderTableView = UITableView().then {
+        $0.register(RiderTableViewCell.self, forCellReuseIdentifier: "RiderTableViewCell")
+        $0.rowHeight = 70
+        $0.separatorStyle = .none
+        $0.backgroundColor = DSMDeliveryAsset.Color.light.color
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
@@ -30,6 +35,8 @@ class MainViewController: BaseViewController {
     override func configureVC() {
         foodTableView.dataSource = self
         foodTableView.delegate = self
+        riderTableView.dataSource = self
+        riderTableView.delegate = self
         userButton.rx.tap.subscribe(onNext: {
             let myPage = MyPageViewController()
             self.navigationController?.pushViewController(myPage, animated: true)
@@ -81,13 +88,23 @@ class MainViewController: BaseViewController {
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8
-
+        switch tableView {
+        case foodTableView:
+            return 8
+        default:
+            return 9
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = foodTableView.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath)
-        return cell
+        switch tableView {
+        case foodTableView:
+            let cell =  foodTableView.dequeueReusableCell(withIdentifier: "FoodTableViewCell", for: indexPath)
+            return cell
+        default:
+            let cell = riderTableView.dequeueReusableCell(withIdentifier: "RiderTableViewCell", for: indexPath)
+            return cell
+        }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
