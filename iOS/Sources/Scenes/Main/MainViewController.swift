@@ -4,7 +4,7 @@ import Then
 import UIKit
 
 
-class MainVC: BaseViewController {
+class MainViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,7 +78,7 @@ class MainVC: BaseViewController {
 }
 
 
-extension MainVC: UITableViewDataSource,UITableViewDelegate {
+extension MainViewController: UITableViewDataSource,UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
