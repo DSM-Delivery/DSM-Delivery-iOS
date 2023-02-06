@@ -7,7 +7,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private let disposeBag: DisposeBag = .init()
 
     func scene(
-        _ scene: UIScene,
+         _ scene: UIScene,
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
@@ -18,6 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let naviMainViewController = mainViewController
         window?.rootViewController = naviMainViewController
         window?.makeKeyAndVisible()
+
+
 
     }
 
