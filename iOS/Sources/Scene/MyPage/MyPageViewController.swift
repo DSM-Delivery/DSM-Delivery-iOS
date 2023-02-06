@@ -16,6 +16,7 @@ class MyPageViewController: BaseViewController {
         $0.layer.cornerRadius = 25
     }
     override func addView() {
+        navigationController?.navigationBar.isHidden = false
         [
             userProFileView,
             ridingView,

@@ -3,7 +3,7 @@ import Then
 import SnapKit
 
 class FoodCell: UITableViewCell {
-    
+
     let userImageView = UIImageView().then {
 //        $0.image = UIImage(named: "foodUser_image")
         $0.layer.cornerRadius = 10
@@ -35,10 +35,11 @@ class FoodCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.backgroundColor = DSMDeliveryAsset.Color.light.color
         addSubView()
         setLayout()
     }
-    
+
     func addSubView() {
         [userImageView,
          userLabel,
@@ -53,7 +54,7 @@ class FoodCell: UITableViewCell {
             $0.top.leading.equalToSuperview().inset(10)
             $0.height.width.equalTo(80)
         }
-        
+
         userLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(12)
             $0.leading.equalTo(userImageView.snp.trailing).offset(10)
@@ -63,7 +64,7 @@ class FoodCell: UITableViewCell {
             $0.top.equalTo(userLabel.snp.bottom).offset(8)
             $0.leading.equalTo(userImageView.snp.trailing).offset(10)
             $0.height.equalTo(10)
-  
+
         }
         priceLabel.snp.makeConstraints {
             $0.top.equalTo(detailLabel.snp.bottom).offset(8)
@@ -82,10 +83,4 @@ class FoodCell: UITableViewCell {
             $0.height.equalTo(1)
         }
     }
-
-
-
-    
-
-    
 }

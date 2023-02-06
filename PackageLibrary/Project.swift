@@ -14,6 +14,6 @@ let project = Project.dynamicFramework(
         .SPM.KeychainSwift,
         .SPM.RxFlow,
         .SPM.Kingfisher,
-        .SPM.SocketIO,
+        .SPM.SocketIO
     ]
 )

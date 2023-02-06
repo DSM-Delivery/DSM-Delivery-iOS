@@ -3,9 +3,8 @@ import Then
 import SnapKit
 
 class RiderCell: UITableViewCell {
-    
+
     let riderUserImageView = UIImageView().then {
-     // $0.image = UIImage()
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.layer.borderColor = DSMDeliveryAsset.Color.gray200.color.cgColor
@@ -13,11 +12,11 @@ class RiderCell: UITableViewCell {
     let nameLabel = UILabel().then {
         $0.text = "김연우"
         $0.font = UIFont.systemFont(ofSize: 20, weight: .medium)
-        $0.textColor = DSMDeliveryAsset.Color.gray200.color
+        $0.textColor = DSMDeliveryAsset.Color.gray600.color
     }
     let starImageView = UIImageView().then {
         $0.image = UIImage(systemName: "star.fill")
-        $0.backgroundColor = DSMDeliveryAsset.Color.gray400.color
+        $0.tintColor = DSMDeliveryAsset.Color.gray400.color
     }
     let starLabel = UILabel().then {
         $0.text = "5.0"
@@ -30,15 +29,16 @@ class RiderCell: UITableViewCell {
         $0.textColor = DSMDeliveryAsset.Color.gray600.color
     }
     let bottomLineView = UIView().then {
-        $0.backgroundColor = .gray
+        $0.backgroundColor = DSMDeliveryAsset.Color.gray100.color
     }
- 
+
     override func layoutSubviews() {
+        super.layoutSubviews()
+        self.backgroundColor = DSMDeliveryAsset.Color.light.color
         addView()
         setLayout()
     }
-    
-    
+
     func addView() {
         [riderUserImageView,
          nameLabel,
@@ -46,7 +46,7 @@ class RiderCell: UITableViewCell {
          starLabel,
          priceLabel,
          bottomLineView
-        ].forEach{self.addSubview($0)}
+        ].forEach { addSubview($0) }
     }
     func setLayout() {
         riderUserImageView.snp.makeConstraints {
@@ -69,7 +69,7 @@ class RiderCell: UITableViewCell {
         priceLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(35)
             $0.trailing.equalToSuperview().inset(10)
-            
+
         }
         bottomLineView.snp.makeConstraints {
             $0.bottom.equalToSuperview()
@@ -77,7 +77,5 @@ class RiderCell: UITableViewCell {
             $0.trailing.equalToSuperview().inset(10)
             $0.height.equalTo(1)
         }
-        
     }
-    
 }

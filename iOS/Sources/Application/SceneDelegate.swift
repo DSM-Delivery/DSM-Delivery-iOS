@@ -7,20 +7,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private let disposeBag: DisposeBag = .init()
 
     func scene(
-         _ scene: UIScene,
+        _ scene: UIScene,
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
 
-        let mainViewController = BaseNavigationController(rootViewController: MyPageViewController())
+        let mainViewController = BaseNavigationController(rootViewController: MainViewController())
         let naviMainViewController = mainViewController
         window?.rootViewController = naviMainViewController
         window?.makeKeyAndVisible()
-
-
-
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
