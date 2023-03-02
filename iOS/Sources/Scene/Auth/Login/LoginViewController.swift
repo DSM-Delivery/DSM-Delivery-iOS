@@ -2,8 +2,11 @@ import UIKit
 import Then
 import SnapKit
 import Moya
+import RxCocoa
+import RxSwift
 
 
+let disposeBag = DisposeBag()
 class LoginViewController: BaseViewController {
     
     let signinLabel = UILabel().then {
@@ -12,16 +15,21 @@ class LoginViewController: BaseViewController {
         $0.font = UIFont.systemFont(ofSize: 30, weight: .bold)
     }
     let idTextField = UITextField().then {
-        $0.placeholder = "  아이디"
+        $0.placeholder = "아이디"
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.layer.borderColor = DSMDeliveryAsset.Color.gray200.color.cgColor
+        $0.leftView =  UIView(frame: CGRect(x: 0.0, y: 0.0, width: 15.0, height: 0.0))
+        $0.leftViewMode = .always
     }
     let passwordTextField = UITextField().then {
-        $0.placeholder = "  비밀번호"
+        $0.placeholder = "비밀번호"
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.layer.borderColor = DSMDeliveryAsset.Color.gray200.color.cgColor
+        $0.isSecureTextEntry = true
+        $0.leftView =  UIView(frame: CGRect(x: 0.0, y: 0.0, width: 15.0, height: 0.0))
+        $0.leftViewMode = .always
     }
     let loginButton = UIButton().then {
         $0.setTitle("로그인", for: .normal)
@@ -35,36 +43,42 @@ class LoginViewController: BaseViewController {
         $0.text = "회원이 아니신가요? 회원가입"
         
     }
+
+  
     
     @objc func didLoginButtonTaped() {
+        
         guard let userId = idTextField.text, userId.isEmpty == false else { return }
         guard let userPw = passwordTextField.text, userPw.isEmpty == false else { return }
-        MY.request(.login(id: userId, password: userPw)){res in
+        MY.request(.login(account_id: userId, password: userPw)){res in
             switch res {
             case .success(let result):
                 switch result.statusCode {
                 case 200:
                     let decoder = JSONDecoder()
-                    if let data = try? decoder.decode(LoginDataModel.self, from: result.data) {
-                        Token._accessToken = data.accessToken
+                    if let data = try? decoder.decode(TokenModel.self, from: result.data) {
+                        Token.accessToken = data.access_token
+                        Token.refreshToken = data.refresh_token
                         DispatchQueue.main.async {
                             self.navigationController?.pushViewController(MainViewController(), animated: true)
                         }
                     } else {
+                        print(userId,userPw,"11")
                         print("Login: decoder error")
                     }
                 default:
+                    
                     print("Login: status \(result.statusCode)")
+                    
                 }
                 
             case .failure(let err):
                 print("Login respons fail: \(err.localizedDescription)")
             }
         }
-        
-        
     }
-    
+        
+ 
     
     override func addView() {
         [signinLabel,

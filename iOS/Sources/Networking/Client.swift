@@ -1,23 +1,18 @@
-//
-//  Client.swift
-//  DSM-Delivery
-//
-//  Created by 박도연 on 2023/02/09.
-//  Copyright © 2023 com.DSM-Delivery. All rights reserved.
-//
-
 import Foundation
 import Moya
 
-let MY = MoyaProvider<API>()
+let MY = MoyaProvider<API>(plugins: [MoyaLoggingPlugin()])
 
 enum API {
-    case login(id: String, password: String)
+    case login(account_id: String, password: String)
+//    case signup(account_id: String, password: String, name: String, gender: String, phone: String, role: String)
+    //    case signup(account_id: String, password: String, name: String, image_path: String,phone_number: String, sex: String, role: String)
 }
 
 extension API: TargetType {
+    
     var baseURL: URL {
-        return URL(string: "http:")!
+        return URL(string: "http://172.20.10.6:8080")!
     }
     
     var path: String {
@@ -31,13 +26,15 @@ extension API: TargetType {
         switch self {
         case .login:
             return .post
+            
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .login(let id, let password):
-            return .requestJSONEncodable(["userId":"\(id)", "password":"\(password)"])
+        case .login(let account_id, let password):
+            return .requestJSONEncodable(["account_id":"\(account_id)", "password":"\(password)"])
+  
         }
     }
     
@@ -48,3 +45,4 @@ extension API: TargetType {
         }
     }
 }
+

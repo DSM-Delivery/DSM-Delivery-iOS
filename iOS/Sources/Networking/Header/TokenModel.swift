@@ -7,6 +7,7 @@
 //
 
 import Foundation
-struct LoginDataModel: Codable {
-    let accessToken: String
+struct TokenModel: Codable {
+    let access_token: String
+    let refresh_token: String
 }
