@@ -34,6 +34,7 @@ class RiderTableViewCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.selectionStyle = .none
         self.backgroundColor = DSMDeliveryAsset.Color.light.color
         addView()
         setLayout()

@@ -8,11 +8,17 @@ class RidingTableViewCell: UITableViewCell {
         $0.layer.borderWidth = 1
         $0.layer.borderColor = DSMDeliveryAsset.Color.gray200.color.cgColor
         $0.clipsToBounds = true
+        $0.image = DSMDeliveryAsset.Assets.userBase.image
     }
     let userNameLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        $0.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         $0.text = "양운석"
         $0.textColor = DSMDeliveryAsset.Color.gray600.color
+    }
+    let contentLabel = UILabel().then {
+        $0.font = UIFont.systemFont(ofSize: 8, weight: .regular)
+        $0.text = "맛동산 밀키스 부탁드립니다."
+        $0.textColor = DSMDeliveryAsset.Color.gray500.color
     }
     let kindLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 8, weight: .regular)
@@ -26,10 +32,12 @@ class RidingTableViewCell: UITableViewCell {
     }
 
     override func layoutSubviews() {
+        self.selectionStyle = .none
         self.backgroundColor = DSMDeliveryAsset.Color.light.color
         [
             userIamgeView,
             userNameLabel,
+            contentLabel,
             kindLabel,
             moenyLabel
         ].forEach { addSubview($0) }
@@ -40,7 +48,11 @@ class RidingTableViewCell: UITableViewCell {
         }
         userNameLabel.snp.makeConstraints {
             $0.leading.equalTo(userIamgeView.snp.trailing).offset(10)
-            $0.centerY.equalToSuperview()
+            $0.top.equalToSuperview().inset(13)
+        }
+        contentLabel.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(13)
+            $0.leading.equalTo(userIamgeView.snp.trailing).offset(10)
         }
         kindLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(13)
