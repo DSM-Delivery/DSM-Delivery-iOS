@@ -5,7 +5,6 @@ import SnapKit
 class FoodTableViewCell: UITableViewCell {
 
     let userImageView = UIImageView().then {
-//        $0.image = UIImage(named: "foodUser_image")
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.layer.borderColor = DSMDeliveryAsset.Color.gray200.color.cgColor
@@ -35,6 +34,7 @@ class FoodTableViewCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.selectionStyle = .none
         self.backgroundColor = DSMDeliveryAsset.Color.light.color
         addSubView()
         setLayout()
@@ -54,9 +54,8 @@ class FoodTableViewCell: UITableViewCell {
             $0.top.leading.equalToSuperview().inset(10)
             $0.height.width.equalTo(80)
         }
-
         userLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(12)
+            $0.top.equalToSuperview().inset(22)
             $0.leading.equalTo(userImageView.snp.trailing).offset(10)
             $0.height.equalTo(16)
         }

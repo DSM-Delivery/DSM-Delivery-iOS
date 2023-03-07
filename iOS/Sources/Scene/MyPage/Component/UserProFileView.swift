@@ -4,11 +4,11 @@ import Then
 
 class UserProFileView: UIView {
     let proFileImageView = UIImageView().then {
-        $0.image = .checkmark
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 15
         $0.layer.borderWidth = 1
         $0.layer.borderColor = DSMDeliveryAsset.Color.gray200.color.cgColor
+        $0.image = DSMDeliveryAsset.Assets.userBase.image
     }
     let proFileNameLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 20, weight: .medium)

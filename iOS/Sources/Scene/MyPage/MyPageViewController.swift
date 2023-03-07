@@ -1,22 +1,32 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 class MyPageViewController: BaseViewController {
     private let userProFileView = UserProFileView().then {
         $0.setShadow(radius: 20)
-        $0.layer.cornerRadius = 25
+        $0.layer.cornerRadius = 10
     }
     private let ridingView = RidingView().then {
         $0.setShadow(radius: 20)
-        $0.layer.cornerRadius = 25
+        $0.layer.cornerRadius = 10
     }
     private let riderMenuView = RiderMenuView().then {
         $0.setShadow(radius: 20)
-        $0.layer.cornerRadius = 25
+        $0.layer.cornerRadius = 10
+        $0.firstRiderButton.titleTextLabel.text = "라이더 설정"
+        $0.secondRiderButton.titleTextLabel.text = "별점주기"
+        $0.thridRiderButton.titleTextLabel.text = "DMS Delivery 환경설정"
+    }
+    override func configureVC() {
+        riderMenuView.firstRiderButton.rx.tap.subscribe(onNext: {
+            let riderEdit = RiderEditViewController()
+            self.navigationController?.pushViewController(riderEdit, animated: true)
+        }).disposed(by: disposeBag)
     }
     override func addView() {
-        navigationController?.navigationBar.isHidden = false
         [
             userProFileView,
             ridingView,
