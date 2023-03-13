@@ -6,8 +6,8 @@ import RxCocoa
 import RxSwift
 
 
-let disposeBag = DisposeBag()
 class LoginViewController: BaseViewController {
+    let viewmodel = LoginViewModel()
     
     let signinLabel = UILabel().then {
         $0.text = "Sign in"
@@ -35,49 +35,66 @@ class LoginViewController: BaseViewController {
         $0.setTitle("로그인", for: .normal)
         $0.backgroundColor = DSMDeliveryAsset.Color.green400.color
         $0.layer.cornerRadius = 10
-        $0.addTarget(self,
-                     action: #selector(didLoginButtonTaped),
-                     for: .touchUpInside)
+//        $0.addTarget(self,
+//                     action: #selector(didLoginButtonTaped),
+//                     for: .touchUpInside)
     }
     let signupLabel = UILabel().then {
-        $0.text = "회원이 아니신가요? 회원가입"
-        
+        $0.text = "회원이 아니신가요?"
+    }
+    let signupButtonLabel = UILabel().then {
+        $0.numberOfLines = 0
+        $0.textAlignment = .center
+        $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-  
-    
-    @objc func didLoginButtonTaped() {
-        
-        guard let userId = idTextField.text, userId.isEmpty == false else { return }
-        guard let userPw = passwordTextField.text, userPw.isEmpty == false else { return }
-        MY.request(.login(account_id: userId, password: userPw)){res in
-            switch res {
-            case .success(let result):
-                switch result.statusCode {
-                case 200:
-                    let decoder = JSONDecoder()
-                    if let data = try? decoder.decode(TokenModel.self, from: result.data) {
-                        Token.accessToken = data.access_token
-                        Token.refreshToken = data.refresh_token
-                        DispatchQueue.main.async {
-                            self.navigationController?.pushViewController(MainViewController(), animated: true)
-                        }
-                    } else {
-                        print(userId,userPw,"11")
-                        print("Login: decoder error")
-                    }
-                default:
-                    
-                    print("Login: status \(result.statusCode)")
-                    
-                }
-                
-            case .failure(let err):
-                print("Login respons fail: \(err.localizedDescription)")
+    override func bind() {
+        let input = LoginViewModel.Input(idText: idTextField.rx.text.orEmpty.asDriver(), passwordText: passwordTextField.rx.text.orEmpty.asDriver(), loginButtonDidTap: loginButton.rx.tap.asSignal())
+        let output = viewmodel.transform(input)
+        output.result.subscribe(onNext: {
+            switch $0 {
+            case true:
+                self.dismiss(animated: true)
+                print("성공")
+            case false:
+                print("실패")
             }
-        }
-    }
+        })
         
+    }
+    
+//    @objc func didLoginButtonTaped() {
+//
+//        guard let userId = idTextField.text, userId.isEmpty == false else { return }
+//        guard let userPw = passwordTextField.text, userPw.isEmpty == false else { return }
+//        MY.request(.login(account_id: userId, password: userPw)){res in
+//            switch res {
+//            case .success(let result):
+//                switch result.statusCode {
+//                case 200:
+//                    let decoder = JSONDecoder()
+//                    if let data = try? decoder.decode(TokenModel.self, from: result.data) {
+//                        Token.accessToken = data.access_token
+//                        Token.refreshToken = data.refresh_token
+//                        DispatchQueue.main.async {
+//                            self.navigationController?.pushViewController(MainViewController(), animated: true)
+//                        }
+//                    } else {
+//                        print(userId,userPw,"11")
+//                        print("Login: decoder error")
+//                    }
+//                default:
+//
+//                    print("Login: status \(result.statusCode)")
+//
+//                }
+//
+//            case .failure(let err):
+//                print("Login respons fail: \(err.localizedDescription)")
+//            }
+//        }
+//    }
+//
  
     
     override func addView() {
