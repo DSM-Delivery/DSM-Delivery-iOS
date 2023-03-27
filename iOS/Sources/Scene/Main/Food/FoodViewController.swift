@@ -9,7 +9,6 @@ class FoodViewController: BaseViewController {
         $0.setShadow(radius: 20)
         $0.layer.cornerRadius = 10
     }
-
     private let titleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         $0.text = "맛동산 밀기스 부탁드립니다"
