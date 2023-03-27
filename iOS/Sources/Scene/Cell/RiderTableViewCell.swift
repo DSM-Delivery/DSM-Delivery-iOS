@@ -3,7 +3,6 @@ import Then
 import SnapKit
 
 class RiderTableViewCell: UITableViewCell {
-
     private let riderUserImageView = UIImageView().then {
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
