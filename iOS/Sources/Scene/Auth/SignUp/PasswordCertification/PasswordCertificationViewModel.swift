@@ -3,6 +3,7 @@ import RxCocoa
 import RxSwift
 
 class PasswordCertificationViewModel: BaseViewModel {
+    private let disposeBag = DisposeBag()
     struct Input {
         let passwordText: PublishRelay<String>
         let idText: String

@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 
 class NumberCertificationViewModel: BaseViewModel {
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     struct Input {
         let firstNumberText: Driver<String>
         let secondNumberText: Driver<String>
