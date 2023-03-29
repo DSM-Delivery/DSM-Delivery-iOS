@@ -1,6 +1,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import UIKit
 
 class NumberCertificationViewModel: BaseViewModel {
     private let disposeBag = DisposeBag()
@@ -41,6 +42,14 @@ class NumberCertificationViewModel: BaseViewModel {
             .disposed(by: disposeBag)
         return Output(result: result)
     }
-    func textVaild() {
+    func textValid(_ input: Input) -> Driver<Bool> {
+        return Driver.combineLatest(
+            input.firstNumberText,
+            input.secondNumberText,
+            input.thirdNumberText,
+            input.fourthNumberText
+        )
+        .map { $0.0.count == 1 && $0.1.count == 1 && $0.2.count == 1 && $0.3.count == 1 }
     }
+
 }

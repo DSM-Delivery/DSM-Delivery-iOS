@@ -30,7 +30,6 @@ class NumberCertificationViewController: BaseViewController {
     private let nextButton = UIButton(type: .system).then {
         $0.setButton(title: "다음")
     }
-
     override func bind() {
         let input = NumberCertificationViewModel.Input(
             firstNumberText: firsTextField.rx.text.orEmpty.asDriver(),
@@ -40,6 +39,7 @@ class NumberCertificationViewController: BaseViewController {
             nextButtonDidTap: nextButton.rx.tap.asSignal(),
             number: number
         )
+        let textValid = viewModel.textValid(input)
         let output = viewModel.transform(input)
         output.result.subscribe(onNext: {
             switch $0 {
@@ -49,6 +49,17 @@ class NumberCertificationViewController: BaseViewController {
                 print("실패")
             }
         }).disposed(by: disposeBag)
+        textValid
+            .asObservable()
+            .subscribe(onNext: { [self] in
+                switch $0 {
+                case true:
+                    nextButton.backgroundColor = DSMDeliveryColor.primary.color
+                case false:
+                    nextButton.backgroundColor = DSMDeliveryColor.green200.color
+                }
+            })
+            .disposed(by: disposeBag)
     }
     override func addView() {
         [
