@@ -51,5 +51,4 @@ class NumberCertificationViewModel: BaseViewModel {
         )
         .map { $0.0.count == 1 && $0.1.count == 1 && $0.2.count == 1 && $0.3.count == 1 }
     }
-
 }

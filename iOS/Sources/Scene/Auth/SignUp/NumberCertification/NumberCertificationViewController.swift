@@ -17,6 +17,7 @@ class NumberCertificationViewController: BaseViewController {
     }
     private let firsTextField = UITextField().then {
         $0.setNumberTextField(forTextField: $0)
+
     }
     private let secondTextField = UITextField().then {
         $0.setNumberTextField(forTextField: $0)
