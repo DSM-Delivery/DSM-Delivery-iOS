@@ -5,6 +5,7 @@ import RxSwift
 import RxCocoa
 
 class NumberCertificationViewController: BaseViewController {
+    var id = ""
     var number = ""
     private let viewModel = NumberCertificationViewModel()
     private let signUpLabel = UILabel().then {
@@ -32,13 +33,15 @@ class NumberCertificationViewController: BaseViewController {
         $0.setButton(title: "다음")
     }
     override func bind() {
+        print(self.number)
         let input = NumberCertificationViewModel.Input(
             firstNumberText: firsTextField.rx.text.orEmpty.asDriver(),
             secondNumberText: secondTextField.rx.text.orEmpty.asDriver(),
             thirdNumberText: thirdTextField.rx.text.orEmpty.asDriver(),
             fourthNumberText: fourthTextField.rx.text.orEmpty.asDriver(),
             nextButtonDidTap: nextButton.rx.tap.asSignal(),
-            number: number
+            number: number,
+            id:id
         )
         let textValid = viewModel.textValid(input)
         let output = viewModel.transform(input)
