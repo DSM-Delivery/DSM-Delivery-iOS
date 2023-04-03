@@ -29,7 +29,7 @@ class PasswordCertificationViewModel: BaseViewModel {
                 default:
                     result.accept(false)
                 }
-            }).disposed(by: disposBag)
+            }).disposed(by: disposeBag)
         return Output(result: result)
     }
 }

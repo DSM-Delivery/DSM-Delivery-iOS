@@ -5,6 +5,7 @@ import RxSwift
 import RxCocoa
 
 class NumberCertificationViewController: BaseViewController {
+    var id = ""
     var number = ""
     private let viewModel = NumberCertificationViewModel()
     private let signUpLabel = UILabel().then {
@@ -17,6 +18,7 @@ class NumberCertificationViewController: BaseViewController {
     }
     private let firsTextField = UITextField().then {
         $0.setNumberTextField(forTextField: $0)
+
     }
     private let secondTextField = UITextField().then {
         $0.setNumberTextField(forTextField: $0)
@@ -30,16 +32,18 @@ class NumberCertificationViewController: BaseViewController {
     private let nextButton = UIButton(type: .system).then {
         $0.setButton(title: "다음")
     }
-
     override func bind() {
+        print(self.number)
         let input = NumberCertificationViewModel.Input(
             firstNumberText: firsTextField.rx.text.orEmpty.asDriver(),
             secondNumberText: secondTextField.rx.text.orEmpty.asDriver(),
             thirdNumberText: thirdTextField.rx.text.orEmpty.asDriver(),
             fourthNumberText: fourthTextField.rx.text.orEmpty.asDriver(),
             nextButtonDidTap: nextButton.rx.tap.asSignal(),
-            number: number
+            number: number,
+            id:id
         )
+        let textValid = viewModel.textValid(input)
         let output = viewModel.transform(input)
         output.result.subscribe(onNext: {
             switch $0 {
@@ -49,6 +53,17 @@ class NumberCertificationViewController: BaseViewController {
                 print("실패")
             }
         }).disposed(by: disposeBag)
+        textValid
+            .asObservable()
+            .subscribe(onNext: { [self] in
+                switch $0 {
+                case true:
+                    nextButton.backgroundColor = DSMDeliveryColor.primary.color
+                case false:
+                    nextButton.backgroundColor = DSMDeliveryColor.green200.color
+                }
+            })
+            .disposed(by: disposeBag)
     }
     override func addView() {
         [
