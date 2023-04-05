@@ -2,10 +2,20 @@ import Foundation
 import Moya
 
 enum API {
+    //user
     case login(accountId: String, password: String)
     case signup(accountId: String, password: String, phone: String)
     case sendNumber(number: String)
     case numberCheck(number: String, numberCode: String)
+
+    case requestList
+    case refreshToken
+//    case requestListLookUP
+//    case riderPostList
+//    case writePost
+//    case detailPost
+//    case detailPostSelectProduct
+//    case deliveried
 }
 
 extension API: TargetType {
@@ -22,6 +32,11 @@ extension API: TargetType {
             return "/user/number"
         case .numberCheck:
             return "/user/numberCheck"
+        case .refreshToken:
+            return "/user/token"
+        case .requestList:
+            return "/post/order"
+
         }
     }
     var method: Moya.Method {
@@ -29,6 +44,10 @@ extension API: TargetType {
         case .login, .signup, .sendNumber:
             return .post
         case .numberCheck:
+            return .put
+        case .requestList:
+            return .get
+        case .refreshToken:
             return .put
         }
     }
@@ -58,12 +77,18 @@ extension API: TargetType {
                                             "number": number,
                                             "numbercode": numberCode
                                         ], encoding: JSONEncoding.default)
+        default:
+            return .requestPlain
         }
     }
     var headers: [String: String]? {
         switch self {
         case .login, .signup, .sendNumber, .numberCheck:
             return Header.tokenIsEmpty.header()
+        case .requestList:
+            return Header.accessToken.header()
+        case .refreshToken:
+            return Header.refreshToken.header()            
         }
     }
 }
