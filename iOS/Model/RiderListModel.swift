@@ -1,9 +1,25 @@
-//
-//  RiderListModel.swift
-//  DSM-Delivery
-//
-//  Created by 박도연 on 2023/04/05.
-//  Copyright © 2023 com.DSM-Delivery. All rights reserved.
-//
-
 import Foundation
+
+struct RiderListModel: Codable {
+    let riderList: [RiderList]
+    enum CodingKeys: String, CodingKey {
+        case riderList = "post_list"
+    }
+}
+
+struct RiderList: Codable {
+    let title: String
+    let userName: String
+    let cost: String
+    let postId: String
+    let profileImage: String
+    let star: Int
+    enum CodingKeys: String, CodingKey {
+        case title
+        case userName = "user_name"
+        case cost
+        case postId = "post_id"
+        case profileImage = "profile_img"
+        case star
+    }
+}
