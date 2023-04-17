@@ -96,25 +96,7 @@ class MainViewController: BaseViewController {
     }
 }
 
-extension MainViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch tableView {
-        case foodTableView:
-            return 8
-        default:
-            return 9
-        }
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch tableView {
-        case foodTableView:
-            let cell =  foodTableView.dequeueReusableCell(withIdentifier: "FoodTableViewCell", for: indexPath)
-            return cell
-        default:
-            let cell = riderTableView.dequeueReusableCell(withIdentifier: "RiderTableViewCell", for: indexPath)
-            return cell
-        }
-    }
+extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch tableView {
         case foodTableView:
