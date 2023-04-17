@@ -3,8 +3,13 @@ import SnapKit
 import Then
 import UIKit
 import RxCocoa
+import Kingfisher
 
 class MainViewController: BaseViewController {
+    let viewmodel = MainViewModel()
+    private let refreshToken = PublishRelay<Void>()
+    private let requestList = PublishRelay<Void>()
+    private let riderList = PublishRelay<Void>()
     let currentPage = BehaviorRelay<Bool>(value: true)
     let writeButton = UIButton().then {
         $0.setImage(DSMDeliveryImage.writeImage.image, for: .normal)
@@ -38,10 +43,48 @@ class MainViewController: BaseViewController {
         $0.semanticContentAttribute = .forceLeftToRight
         $0.imagePadding(padding: 4)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        self.riderList.accept(())
+        self.requestList.accept(())
+    }
+    override func bind() {
+        let input = MainViewModel.Input(refreshToken: refreshToken,
+                                        requestList: requestList,
+                                        riderList: riderList)
+        let output = viewmodel.transform(input)
+        output.result.subscribe(onNext: {
+            switch $0 {
+            case true:
+                print("성공")
+            default:
+                let viewcontroller = LoginViewController()
+                viewcontroller.modalPresentationStyle = .fullScreen
+                self.present(viewcontroller, animated: true)
+            }
+        }).disposed(by: disposeBag)
+        output.requsetList.bind(to: foodTableView.rx.items(
+            cellIdentifier: "FoodTableViewCell",
+            cellType: FoodTableViewCell.self)) { _, item, cell in
+                let url = URL(string: item.profileImg)
+                cell.userImageView.kf.setImage(with: url)
+                cell.titleLabel.text = item.title
+                cell.userLabel.text = item.userName
+                cell.foodLabel.text = item.productType
+            }.disposed(by: disposeBag)
+
+        output.riderList.bind(to: riderTableView.rx.items(
+            cellIdentifier: "RiderTableViewCell",
+            cellType: RiderTableViewCell.self)) { _, item, cell in
+                let url = URL(string: item.profileImg)
+                cell.riderUserImageView.kf.setImage(with: url)
+                cell.starLabel.text = "\(item.star)"
+                cell.nameLabel.text = item.userName
+                cell.priceLabel.text = item.cost
+            }.disposed(by: disposeBag)
+    }
     override func configureVC() {
-        foodTableView.dataSource = self
+        let writeViewController = WriteViewController()
         foodTableView.delegate = self
-        riderTableView.dataSource = self
         riderTableView.delegate = self
         userButton.rx.tap.subscribe(onNext: {
             let myPage = MyPageViewController()
@@ -62,11 +105,15 @@ class MainViewController: BaseViewController {
                 self.riderTableView.isHidden = currentPage
             })
             if currentPage {
-               self.dropDownButton.setTitle("택배, 간식", for: .normal)
+                self.dropDownButton.setTitle("택배, 간식", for: .normal)
             } else {
                 self.dropDownButton.setTitle("라이더", for: .normal)
             }
         }).disposed(by: disposeBag)
+        writeButton.rx.tap
+            .bind {
+                self.navigationController?.pushViewController(writeViewController, animated: true)
+            }.disposed(by: disposeBag)
     }
     override func addView() {
         let rigthStackView = UIStackView(arrangedSubviews: [writeButton, chatButton, userButton]).then {
