@@ -3,7 +3,7 @@ import Then
 import SnapKit
 
 class FoodTableViewCell: UITableViewCell {
-    let userImageView = UIImageView().then {
+    var userImageView = UIImageView().then {
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.layer.borderColor = DSMDeliveryAsset.Color.gray200.color.cgColor
@@ -22,7 +22,7 @@ class FoodTableViewCell: UITableViewCell {
         $0.text = "10,000원"
         $0.textColor = DSMDeliveryAsset.Color.gray600.color
     }
-    let foodLabel = UILabel().then {
+    var foodLabel = UILabel().then {
         $0.text = "간식"
         $0.font = UIFont.systemFont(ofSize: 10, weight: .light)
         $0.textColor = DSMDeliveryAsset.Color.gray400.color
