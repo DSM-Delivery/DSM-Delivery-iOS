@@ -1,16 +1,16 @@
 import Foundation
 
 struct RequestListModel: Codable {
-    let postList: [RequestList]
+    let postList: [PostList]
     enum CodingKeys: String, CodingKey {
         case postList = "post_list"
     }
 }
 
-struct RequestList: Codable {
+struct PostList: Codable {
     let title: String
     let userName: String
-    let cost: Int
+    let cost: String
     let postId: String
     let profileImg: String
     let productType: String
