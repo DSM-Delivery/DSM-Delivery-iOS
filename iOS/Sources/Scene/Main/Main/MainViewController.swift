@@ -70,8 +70,8 @@ class MainViewController: BaseViewController {
                 cell.titleLabel.text = item.title
                 cell.userLabel.text = item.userName
                 cell.foodLabel.text = item.productType
+                cell.postId = item.postId
             }.disposed(by: disposeBag)
-
         output.riderList.bind(to: riderTableView.rx.items(
             cellIdentifier: "RiderTableViewCell",
             cellType: RiderTableViewCell.self)) { _, item, cell in
@@ -144,7 +144,7 @@ class MainViewController: BaseViewController {
 }
 
 extension MainViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch tableView {
         case foodTableView:
             let foodViewController = FoodViewController()
