@@ -40,11 +40,19 @@ extension UIButton {
         )
         setAttributedTitle(attributedString, for: .normal)
     }
-    func setButton(title: String) {
-        setTitle(title, for: .normal)
-        layer.cornerRadius = 10
-        backgroundColor = DSMDeliveryAsset.Color.green200.color
-        setTitleColor(DSMDeliveryAsset.Color.light.color, for: .normal)
-        titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    func setAuthButton(title: String) {
+        self.setTitle(title, for: .normal)
+        self.layer.cornerRadius = 10
+        self.backgroundColor = DSMDeliveryAsset.Color.green200.color
+        self.setTitleColor(DSMDeliveryAsset.Color.light.color, for: .normal)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    }
+    func setWriteButton(title: String, radius: Int, fontSize: Int) {
+        self.titleLabel?.font = UIFont.systemFont(ofSize: CGFloat(fontSize), weight: .semibold)
+        self.setTitle(title, for: .normal)
+        self.layer.cornerRadius = CGFloat(radius)
+        self.backgroundColor = DSMDeliveryAsset.Color.green400.color
+        self.layer.borderWidth = 1
+        self.layer.borderColor = DSMDeliveryAsset.Color.green400.color.cgColor
     }
 }

@@ -22,4 +22,12 @@ extension UITextField {
         self.leftViewMode = ViewMode.always
         forTextField.keyboardType = .numberPad
     }
+    func setTitleTextField(forTextField: UITextField, placeholderText: String) {
+        forTextField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [
+            .foregroundColor: DSMDeliveryAsset.Color.gray300.color,
+            .font: UIFont.boldSystemFont(ofSize: 22.0)
+        ])
+        forTextField.layer.borderWidth = 0
+
+    }
 }

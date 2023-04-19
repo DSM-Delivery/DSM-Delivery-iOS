@@ -1,9 +1,13 @@
 import UIKit
 
 extension UILabel {
-    func setLabel(text: String) {
+    func setAuthLabel(text: String) {
         self.text = text
-        textColor = DSMDeliveryAsset.Color.primary.color
-        font = UIFont.systemFont(ofSize: 30, weight: .bold)
+        self.textColor = DSMDeliveryAsset.Color.primary.color
+        self.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+    }
+    func setWriteLabel(text: String) {
+        self.text = text
+        self.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
     }
 }
