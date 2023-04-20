@@ -11,13 +11,13 @@ class MainViewModel: BaseViewModel {
     }
     struct Output {
         let result: PublishRelay<Bool>
-        let requsetList: BehaviorRelay<[RequestList]>
+        let requsetList: BehaviorRelay<[PostList]>
         let riderList: BehaviorRelay<[RiderList]>
     }
     func transform(_ input: Input) -> Output {
         let api = Service()
         let result = PublishRelay<Bool>()
-        let requestList = BehaviorRelay<[RequestList]>(value: [])
+        let requestList = BehaviorRelay<[PostList]>(value: [])
         let riderList = BehaviorRelay<[RiderList]>(value: [])
         input.refreshToken.asObservable()
             .flatMap { api.refreshToken() }
