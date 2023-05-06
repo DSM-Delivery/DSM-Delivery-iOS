@@ -3,6 +3,7 @@ import Then
 import SnapKit
 
 class FoodTableViewCell: UITableViewCell {
+    var postId: String = ""
     var userImageView = UIImageView().then {
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
