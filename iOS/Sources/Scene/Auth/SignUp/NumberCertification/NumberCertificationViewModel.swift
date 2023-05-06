@@ -10,14 +10,13 @@ class NumberCertificationViewModel: BaseViewModel {
         let thirdNumberText: Driver<String>
         let fourthNumberText: Driver<String>
         let nextButtonDidTap: Signal<Void>
-        let number: String
-        let id: String
+        let numberCode: String
     }
     struct Output {
         let result: PublishRelay<Bool>
     }
     func transform(_ input: Input) -> Output {
-        let api = Service()
+//        let api = Service()
         let result = PublishRelay<Bool>()
         let info = Driver.combineLatest(
             input.firstNumberText,
@@ -25,21 +24,12 @@ class NumberCertificationViewModel: BaseViewModel {
             input.thirdNumberText,
             input.fourthNumberText
         )
-        input.nextButtonDidTap
-            .asObservable()
+
+        input.nextButtonDidTap.asObservable()
             .withLatestFrom(info)
-            .flatMap { first, second, third, fourth in
-                api.numberCheck(input.number, first+second+third+fourth)
-            }
-            .subscribe(onNext: { res in
-                switch res {
-                case .getOk:
-                    result.accept(true)
-                default:
-                    result.accept(false)
-                }
-            })
-            .disposed(by: disposeBag)
+            .subscribe(onNext: {
+                result.accept(input.numberCode == $0+$1+$2+$3)
+            }).disposed(by: disposeBag)
         return Output(result: result)
     }
     func textValid(_ input: Input) -> Driver<Bool> {
