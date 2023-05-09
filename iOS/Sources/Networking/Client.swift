@@ -2,16 +2,18 @@ import Foundation
 import Moya
 
 enum API {
-    //user
+// user
     case login(accountId: String, password: String)
-    case signup(accountId: String, password: String, phone: String)
+    case signup(accountId: String, password: String, phone: String, name: String, sex: String, role: String)
     case sendNumber(number: String)
-    case numberCheck(number: String, numberCode: String)
 
     case requestList
     case refreshToken
+    case riderList
+//    case writePost
+//    case selectObject
+
 //    case requestListLookUP
-//    case riderPostList
 //    case writePost
 //    case detailPost
 //    case detailPostSelectProduct
@@ -20,7 +22,7 @@ enum API {
 
 extension API: TargetType {
     var baseURL: URL {
-        return URL(string: "http://172.20.10.6:8080")!
+        return URL(string: "http://172.20.10.4:8080")!
     }
     var path: String {
         switch self {
@@ -28,24 +30,25 @@ extension API: TargetType {
             return "/user/auth"
         case .signup:
             return "/user/register"
-        case .sendNumber:
-            return "/user/number"
-        case .numberCheck:
-            return "/user/numberCheck"
+        case .sendNumber(let number):
+            return "/user/sendSMS/\(number)"
+
         case .refreshToken:
             return "/user/token"
         case .requestList:
             return "/post/order"
-
+        case .riderList:
+            return "/post/rider"
+//        case .writePost
+//            return "/post"
+//            case selectObjec
         }
     }
     var method: Moya.Method {
         switch self {
-        case .login, .signup, .sendNumber:
+        case .login, .signup:
             return .post
-        case .numberCheck:
-            return .put
-        case .requestList:
+        case .requestList, .riderList, .sendNumber:
             return .get
         case .refreshToken:
             return .put
@@ -59,36 +62,34 @@ extension API: TargetType {
                                             "account_id": accountId,
                                             "password": password
                                         ], encoding: JSONEncoding.default)
-        case .signup(let accountId, let password, let phone):
+        case .signup(let accountId, let password, let phone, let name, let sex, let role):
             return .requestParameters(parameters:
                                         [
                                             "account_id": accountId,
                                             "password": password,
-                                            "phone": phone
+                                            "phone": phone,
+                                            "name": name,
+                                            "sex": sex,
+                                            "role": role
                                         ], encoding: JSONEncoding.default)
-        case .sendNumber(let number):
-            return.requestParameters(parameters:
-                                        [
-                                            "number": number
-                                        ], encoding: JSONEncoding.default)
-        case .numberCheck(let number, let numberCode):
-            return.requestParameters(parameters:
-                                        [
-                                            "number": number,
-                                            "numbercode": numberCode
-                                        ], encoding: JSONEncoding.default)
+//        case .numberCheck(let number, let numberCode):
+//            return.requestParameters(parameters:
+//                                        [
+//                                            "number": number,
+//                                            "numbercode": numberCode
+//                                        ], encoding: JSONEncoding.default)
         default:
             return .requestPlain
         }
     }
     var headers: [String: String]? {
         switch self {
-        case .login, .signup, .sendNumber, .numberCheck:
+        case .login, .signup, .sendNumber:
             return Header.tokenIsEmpty.header()
-        case .requestList:
+        case .requestList, .riderList:
             return Header.accessToken.header()
         case .refreshToken:
-            return Header.refreshToken.header()            
+            return Header.refreshToken.header()
         }
     }
 }
