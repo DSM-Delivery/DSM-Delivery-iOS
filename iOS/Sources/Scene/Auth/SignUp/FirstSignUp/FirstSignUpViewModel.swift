@@ -7,28 +7,32 @@ class FirstSignUpViewModel: BaseViewModel {
     struct Input {
         let idText: Driver<String>
         let numberText: Driver<String>
-        let nextButtonDidTaped: Signal<Void>
+        let certificationButtonDidTaped: Signal<Void>
     }
     struct Output {
         let result: PublishRelay<Bool>
+        let codeNumber: PublishRelay<String>
     }
     func transform(_ input: Input) -> Output {
         let service = Service()
         let result = PublishRelay<Bool>()
+        let codeNumber = PublishRelay<String>()
         let info = Driver.combineLatest(input.idText, input.numberText)
-        input.nextButtonDidTaped
+        print(input.numberText)
+        input.certificationButtonDidTaped
             .asObservable()
             .withLatestFrom(info)
             .flatMap { _, number in
                 service.sendNumber(number)
-            }.subscribe(onNext: {res in
+            }.subscribe(onNext: { code, res in
                 switch res {
-                case .created:
+                case .getOk:
                     result.accept(true)
+                    codeNumber.accept(code?.code ?? "")
                 default:
                     result.accept(false)
                 }
             }).disposed(by: disposeBag)
-            return Output(result: result)
+            return Output(result: result, codeNumber: codeNumber)
     }
 }

@@ -38,7 +38,7 @@ class DropDownViewController: BaseViewController {
     override func bind() {
         let input = DropDownViewModel.Input(currentPage: currentPage.asDriver())
         let output = viewModel.transform(input)
-        output.currentPage.subscribe(onNext: { [self] in
+        output.currentPage.subscribe(onNext: { [unowned self] in
             if $0 {
                 firstButton.isOn()
                 secondButton.isOff()

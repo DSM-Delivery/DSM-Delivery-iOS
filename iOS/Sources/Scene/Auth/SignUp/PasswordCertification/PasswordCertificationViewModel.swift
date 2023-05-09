@@ -9,27 +9,29 @@ class PasswordCertificationViewModel: BaseViewModel {
         let idText: String
         let numberText: String
         let completeButtonDidTap: Signal<Void>
+        let passwordValidText: PublishRelay<String>
     }
     struct Output {
         let result: PublishRelay<Bool>
     }
     func transform(_ input: Input) -> Output {
-        let api = Service()
         let result = PublishRelay<Bool>()
-        let info = input.passwordText
-        input.completeButtonDidTap
-            .asObservable()
-            .withLatestFrom(info)
-            .flatMap { passwordText in
-                api.signup(input.idText, passwordText, input.numberText)
-            }.subscribe(onNext: { res in
-                switch res {
-                case .created:
-                    result.accept(true)
-                default:
-                    result.accept(false)
-                }
-            }).disposed(by: disposeBag)
+
+//        let info = PublishRelay.combineLatest(input.passwordText, input.passwordValidText)
+//        input.completeButtonDidTap
+//            .asObservable()
+//            .withLatestFrom(info)
+//            .filter { password, passwordVaildText in
+//                return password == passwordVaildText
+//            }
+//            .subscribe(onNext: { res in
+//                switch res {
+//                case true:
+//                    result.accept(true)
+//                default:
+//                    result.accept(false)
+//                }
+//            }).disposed(by: disposeBag)
         return Output(result: result)
     }
 }

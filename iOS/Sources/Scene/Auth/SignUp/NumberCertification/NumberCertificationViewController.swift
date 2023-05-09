@@ -5,11 +5,12 @@ import RxSwift
 import RxCocoa
 
 class NumberCertificationViewController: BaseViewController {
+    var code = ""
     var id = ""
     var number = ""
     private let viewModel = NumberCertificationViewModel()
     private let signUpLabel = UILabel().then {
-        $0.setLabel(text: "Sign up")
+        $0.setAuthLabel(text: "Sign up")
     }
     private let detailLabel = UILabel().then {
         $0.text = "입력한 전화번호로 인증번호를 전송했습니다."
@@ -18,7 +19,6 @@ class NumberCertificationViewController: BaseViewController {
     }
     private let firsTextField = UITextField().then {
         $0.setNumberTextField(forTextField: $0)
-
     }
     private let secondTextField = UITextField().then {
         $0.setNumberTextField(forTextField: $0)
@@ -30,18 +30,17 @@ class NumberCertificationViewController: BaseViewController {
         $0.setNumberTextField(forTextField: $0)
     }
     private let nextButton = UIButton(type: .system).then {
-        $0.setButton(title: "다음")
+        $0.setAuthButton(title: "다음")
     }
     override func bind() {
-        print(self.number)
+        let viewController = PasswordCertificationViewController()
         let input = NumberCertificationViewModel.Input(
             firstNumberText: firsTextField.rx.text.orEmpty.asDriver(),
             secondNumberText: secondTextField.rx.text.orEmpty.asDriver(),
             thirdNumberText: thirdTextField.rx.text.orEmpty.asDriver(),
             fourthNumberText: fourthTextField.rx.text.orEmpty.asDriver(),
             nextButtonDidTap: nextButton.rx.tap.asSignal(),
-            number: number,
-            id:id
+            numberCode: code
         )
         let textValid = viewModel.textValid(input)
         let output = viewModel.transform(input)
@@ -49,13 +48,14 @@ class NumberCertificationViewController: BaseViewController {
             switch $0 {
             case true:
                 print("성공")
+                self.navigationController?.pushViewController(viewController, animated: true)
             default:
                 print("실패")
             }
         }).disposed(by: disposeBag)
         textValid
             .asObservable()
-            .subscribe(onNext: { [self] in
+            .subscribe(onNext: { [unowned self] in
                 switch $0 {
                 case true:
                     nextButton.backgroundColor = DSMDeliveryColor.primary.color

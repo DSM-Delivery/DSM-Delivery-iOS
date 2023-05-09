@@ -8,7 +8,7 @@ import RxSwift
 class LoginViewController: BaseViewController {
     private let viewModel = LoginViewModel()
     private let signinLabel = UILabel().then {
-        $0.setLabel(text: "Sign in")
+        $0.setAuthLabel(text: "Sign in")
     }
     private let idTextField = UITextField().then {
         $0.setTextField(forTextField: $0, placeholder: "아이디")
@@ -20,7 +20,7 @@ class LoginViewController: BaseViewController {
         $0.isSecureTextEntry = true
     }
     private let loginButton = UIButton(type: .system).then {
-        $0.setButton(title: "완료")
+        $0.setAuthButton(title: "완료")
     }
     private let signupLabel = UILabel().then {
         $0.text = "회원이 아니신가요?"
@@ -50,7 +50,7 @@ class LoginViewController: BaseViewController {
         output.result.subscribe(onNext: {
             switch $0 {
             case true:
-                self.dismiss(animated: true)
+                self.navigationController?.pushViewController(MainViewController(), animated: true)
                 print("성공")
             case false:
                 print("실패")
@@ -58,7 +58,8 @@ class LoginViewController: BaseViewController {
         }).disposed(by: disposeBag)
     }
     override func addView() {
-        [signinLabel,
+        [
+         signinLabel,
          idTextField,
          passwordTextField,
          loginButton,

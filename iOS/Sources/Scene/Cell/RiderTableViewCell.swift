@@ -3,13 +3,12 @@ import Then
 import SnapKit
 
 class RiderTableViewCell: UITableViewCell {
-    private let riderUserImageView = UIImageView().then {
+    let riderUserImageView = UIImageView().then {
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.layer.borderColor = DSMDeliveryAsset.Color.gray200.color.cgColor
     }
-    private let nameLabel = UILabel().then {
-        $0.text = "김연우"
+    var nameLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         $0.textColor = DSMDeliveryAsset.Color.gray600.color
     }
@@ -17,13 +16,11 @@ class RiderTableViewCell: UITableViewCell {
         $0.image = UIImage(systemName: "star.fill")
         $0.tintColor = DSMDeliveryAsset.Color.gray400.color
     }
-    private let starLabel = UILabel().then {
-        $0.text = "5.0"
+    var starLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 10, weight: .light)
         $0.textColor = DSMDeliveryAsset.Color.gray400.color
     }
-    private let priceLabel = UILabel().then {
-        $0.text = "1000원"
+    var priceLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         $0.textColor = DSMDeliveryAsset.Color.gray600.color
     }

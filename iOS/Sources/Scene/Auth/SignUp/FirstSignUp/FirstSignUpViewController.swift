@@ -7,7 +7,7 @@ import RxCocoa
 class FirstSignUpViewController: BaseViewController {
     private let viewModel = FirstSignUpViewModel()
     private let signupLabel = UILabel().then {
-        $0.setLabel(text: "Sign up")
+        $0.setAuthLabel(text: "Sign up")
     }
     private let idTextField = UITextField().then {
         $0.setTextField(forTextField: $0, placeholder: "아이디")
@@ -17,37 +17,48 @@ class FirstSignUpViewController: BaseViewController {
         $0.setTextField(forTextField: $0, placeholder: "전화번호")
         $0.addLeftPadding()
     }
+    private let certificationButton = UIButton(type: .system).then {
+        $0.setAuthButton(title: "인증")
+    }
     private let nextButton = UIButton(type: .system).then {
-        $0.setButton(title: "다음")
+        $0.setAuthButton(title: "다음")
     }
     override func bind() {
         let viewController = NumberCertificationViewController()
-        nextButton.rx.tap
-            .bind {
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
-            .disposed(by: disposeBag)
+        let nameViewController = NameSignupViewController()
         let input = FirstSignUpViewModel.Input(idText: idTextField.rx.text.orEmpty.asDriver(),
-                                              numberText: numberTextField.rx.text.orEmpty.asDriver(),
-                                              nextButtonDidTaped: nextButton.rx.tap.asSignal())
+                                               numberText: numberTextField.rx.text.orEmpty.asDriver(),
+                                               certificationButtonDidTaped: certificationButton.rx.tap.asSignal())
         let output = viewModel.transform(input)
-        output.result.subscribe(onNext: { [self] in
+        output.result.subscribe(onNext: { [unowned self] in
             switch $0 {
             case true:
                 print("번호보냄")
-                viewController.number = numberTextField.text!
-                print(viewController.number)
+                nameViewController.number = numberTextField.text!
+                nameViewController.userId = idTextField.text!
                 navigationController?.pushViewController(viewController, animated: true)
             case false:
                 print("실패")
             }
         }).disposed(by: disposeBag)
+        output.codeNumber.subscribe(onNext: {
+            print($0)
+            viewController.code = $0
+        }).disposed(by: disposeBag)
+    }
+    override func configureVC() {
+        nextButton.rx.tap.bind {
+            let viewController = NumberCertificationViewController()
+            viewController.code = "1234"
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }.disposed(by: disposeBag)
     }
     override func addView() {
         [
          signupLabel,
          idTextField,
          numberTextField,
+         certificationButton,
          nextButton
         ].forEach { view.addSubview($0) }
     }
@@ -63,8 +74,15 @@ class FirstSignUpViewController: BaseViewController {
         }
         numberTextField.snp.makeConstraints {
             $0.top.equalTo(idTextField.snp.bottom).offset(15)
-            $0.leading.trailing.equalToSuperview().inset(24)
+            $0.leading.equalToSuperview().inset(24)
             $0.height.equalTo(49)
+        }
+        certificationButton.snp.makeConstraints {
+            $0.top.equalTo(idTextField.snp.bottom).offset(15)
+            $0.leading.equalTo(numberTextField.snp.trailing).offset(9)
+            $0.trailing.equalToSuperview().inset(24)
+            $0.height.equalTo(49)
+            $0.width.equalTo(76)
         }
         nextButton.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(45)
